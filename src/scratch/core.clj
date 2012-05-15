@@ -109,6 +109,26 @@
   (rgb {:min :r :comp [10 250 254]}) => [4 255 255]
   (rgb {:min :r :comp [50 255 100]}) => [0 255 150])
 
+(defmethod rgb :b [{:keys [comp]}]
+  (let [[r g b] comp
+        h (quot b 2)
+        h1 (+ h (rem b 2))
+        [nr rmr] (new-comp r h1)
+        [ng nb] (new-comp g (+ h rmr))]
+    [nr ng nb]))
+
+(fact
+  (rgb {:min :b :comp [254 255 2]})  => [255 255 1]
+  (rgb {:min :b :comp [250 255 10]}) => [255 255 5]
+  (rgb {:min :b :comp [1 1 2]})      => [2 2 0]
+  (rgb {:min :b :comp [10 10 20]})   => [20 20 0]
+  (rgb {:min :b :comp [10 10 19]})   => [20 19 0]
+  (rgb {:min :b :comp [200 100 50]}) => [225 125 0]
+  (rgb {:min :b :comp [254 250 20]}) => [255 255 14]
+  (rgb {:min :b :comp [250 254 3]})  => [252 255 0]
+  (rgb {:min :b :comp [250 254 10]}) => [255 255 4]
+  (rgb {:min :b :comp [255 100 50]}) => [255 150 0])
+
 (comment
   (defn distribute "Distribute the smallest composant rgb into the 2 others from left to right"
     [[r g b :as comp]]
