@@ -8,7 +8,7 @@
 ;; ----------------------------- rss feed
 
 ;; Retrieve a rss feed
-(def my-rss (xml/parse "http://adumont.fr/blog/feed/"))
+(comment (def my-rss (xml/parse "http://adumont.fr/blog/feed/")))
 
 (defn zip-str [s]
   (zip/xml-zip (xml/parse (java.io.ByteArrayInputStream. (.getBytes s)))))
