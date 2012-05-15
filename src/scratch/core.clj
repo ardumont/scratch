@@ -66,8 +66,8 @@
   (new-comp 254 10) => [255 9]
   (new-comp 250 100) => [255 95])
 
-(defmulti "Compute the new composant [r g b] - Distribute ~equally the composant :min in the other 2 composants"
-  rgb :min)
+;; "Compute the new composant [r g b] - Distribute ~equally the composant :min in the other 2 composants"
+(defmulti rgb :min)
 
 (defmethod rgb :g [{:keys [comp]}]
   (let [[r g b] comp
