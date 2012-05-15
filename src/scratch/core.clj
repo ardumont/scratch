@@ -129,12 +129,14 @@
   (rgb {:min :b :comp [250 254 10]}) => [255 255 4]
   (rgb {:min :b :comp [255 100 50]}) => [255 150 0])
 
-(comment
-  (defn distribute "Distribute the smallest composant rgb into the 2 others from left to right"
-    [[r g b :as comp]]
-    (let [m (apply min comp)]
-      
-      m))
+(defn distribute "Distribute the smallest composant rgb into the 2 others from left to right"
+  [[r g b :as comp]]
+  (let [m (apply min comp)]
+    (cond (= m r) (rgb {:min :r :comp comp})
+          (= m g) (rgb {:min :g :comp comp})
+          :else   (rgb {:min :b :comp comp}))))
 
-  (fact
-    (distribute [1 2 3]) => [0 3 3]))
+(fact
+  (distribute [1 2 3]) => [0 3 3]
+  (distribute [2 1 3]) => [3 0 3]
+  (distribute [2 3 2]) => [0 4 3])
