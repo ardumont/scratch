@@ -66,9 +66,9 @@
   (new-comp 254 10) => [255 9]
   (new-comp 250 100) => [255 95])
 
-(defmulti rgb :min)
+(defmulti "Compute the new composant [r g b] - Distribute ~equally the composant :min in the other 2 composants"
+  rgb :min)
 
-;; Compute the new composant [r g b] - Distribute ~equally the composant g in the composant r and b.
 (defmethod rgb :g [{:keys [comp]}]
   (let [[r g b] comp
         h (quot g 2)
@@ -129,7 +129,7 @@
   (rgb {:min :b :comp [250 254 10]}) => [255 255 4]
   (rgb {:min :b :comp [255 100 50]}) => [255 150 0])
 
-(defn distribute "Distribute the smallest composant rgb into the 2 others from left to right"
+(defn distribute "Distribute the smallest composant rgb into the 2 others (from left to right)."
   [[r g b :as comp]]
   (let [m (apply min comp)]
     (cond (= m r) (rgb {:min :r :comp comp})
