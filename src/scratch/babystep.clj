@@ -15,7 +15,10 @@
           (comp (partial = "2") #(% "b"))))
 
 (defmulti to-pred5 "convert a parsed query element to a predicate"
-  (fn [e] (if (vector? e) :parens (:tag e))))
+  (fn [e]
+    (cond (and (vector? e) (= "(" (first e))) :parens-open
+          (vector? e) :parens
+          :else (:tag e))))
 
 (defmethod to-pred5 :symbol
   [{[c] :content}] c)
@@ -44,6 +47,18 @@
   (to-pred5 {:tag :binary-op, :content ["AND"]}) => every-pred
   (to-pred5 {:tag :binary-op, :content ["OR"]}) => some-fn)
 
+(defmethod to-pred5 :parens-open
+  [s]
+  (let [r (butlast (rest s))]
+    (to-pred5 r)))
+
+;; smaller target to achieve
+(fact
+  (to-pred5 ["(" :expr :expr2 :expr3 :expr4 ")"]) => (comp :some-pred-fn)
+  (provided
+    (to-pred5 [:expr :expr2 :expr3 :expr4]) => :some-pred-fn))
+
+;; small target to achieve
 (def q ["("
         {:tag :key-value,
          :content
@@ -56,13 +71,7 @@
          [{:tag :symbol, :content ["b"]} ":" {:tag :symbol, :content ["2"]}]}
         ")"])
 
-(defmethod to-pred5 :parens
-  [& s]
-
-  identity)
-
-
-(fact
+(future-fact
   ((to-pred5 q) {"a" "1", "b" "2"}) => true)
 
 (future-fact
