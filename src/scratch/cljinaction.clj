@@ -20,3 +20,18 @@
 
 (fact
   (parse-line "this is a a test") => [["this" 1] ["is" 1] ["a" 1] ["a" 1] ["test" 1]])
+
+(defn combine
+  [mapped]
+  (->> (apply concat mapped)
+       (group-by first)
+       (map (fn [[k v]] {k (map second v)}))
+       (apply merge-with conj)))
+
+(fact
+  (combine [[["this" 1] ["is" 1] ["a" 1] ["a" 1] ["test" 1]]
+            [["this" 10] ["b" 5]]]) => (contains '{"this" (1 10)
+                                                  "is"   (1)
+                                                  "a"    (1 1)
+                                                  "test" (1)
+                                                  "b"    (5)}))
