@@ -35,3 +35,25 @@
                                                   "a"    (1 1)
                                                   "test" (1)
                                                   "b"    (5)}))
+
+(defn sum
+  [[k v]]
+  {k (apply + v)})
+
+(fact
+  (sum [:a [1 2 3 4]]) => {:a 10})
+
+(defn frequence
+  [m]
+  (apply merge (map sum m)))
+
+(fact
+  (frequence '{"this" (1 10)
+               "is"   (1)
+               "a"    (1 1)
+               "test" (1)
+               "b"    (5)}) => (contains '{"this" 11
+                                           "is"   1
+                                           "a"    2
+                                           "test" 1
+                                           "b"    5}))
