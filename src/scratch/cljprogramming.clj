@@ -63,4 +63,10 @@
        (cons 2)
        (cons 1)
        (cons 0))                              => [0 1 2 3 :a :b]
-  (list* 0 1 2 3 [:a :b])                     => [0 1 2 3 :a :b])
+       (list* 0 1 2 3 [:a :b])                => [0 1 2 3 :a :b])
+
+;; ----------------------------- sequences - lazyseq
+
+(defn random-ints "Returns a lazy-seq of random integers [0,limit)"
+  [limit]
+  (cons (rand-int limit) (lazy-seq (random-ints limit))))
