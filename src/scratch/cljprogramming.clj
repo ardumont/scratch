@@ -17,4 +17,12 @@
   (interleave [1 2 3] [:a :b :c :d])   => [1 :a 2 :b 3 :c]
   (interleave [1 2 3 4] [:a :b :c])    => [1 :a 2 :b 3 :c])
 
+(defn swap-pairs
+  [sequential]
+  (into (empty sequential)
+        (interleave (take-nth 2 (drop 1 sequential))
+                    (take-nth 2 sequential))))
 
+(fact
+  (swap-pairs (apply list (range 10))) => '(8 9 6 7 4 5 2 3 0 1)
+  (swap-pairs (apply vector (range 10))) => [1 0 3 2 5 4 7 6 9 8])
