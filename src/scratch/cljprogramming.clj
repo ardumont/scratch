@@ -69,4 +69,12 @@
 
 (defn random-ints "Returns a lazy-seq of random integers [0,limit)"
   [limit]
-  (cons (rand-int limit) (lazy-seq (random-ints limit))))
+  (lazy-seq
+   (println "realizing a new number in the lazy-seq")
+   (cons (rand-int limit) (random-ints limit))))
+
+(defn random-ints2
+  [limit]
+  (repeatedly #(rand-int limit)))
+
+
