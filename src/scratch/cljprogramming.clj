@@ -79,17 +79,25 @@
 
 ;; ----------------------------- compare
 
-(fact
-  (compare 1 2) => -1
-  (compare 2 1) => 1)
-
-(fact
-  (compare [1 2] [1 2 3]) => -1
-  (compare [1 2 3] [1 2]) => 1)
-
-(fact
-  (compare "ab" "abc") => -1
-  (compare "abc" "ab") => 1
-  (compare "xy" "ab")  => pos?
-  (compare "ab" "xy")  => neg?
-  (compare "ab" "ab")  => 0)
+(tabular
+ (fact "testing compare with other stuff"
+   (compare ?a ?b) => ?r)
+ ?a       ?b     ?r
+ 1        2      -1
+ 2        1       1
+ 1        3      -2
+ 3        1       2
+ 100      100     0
+ [1 2]   [1 2 3] -1
+ [1 2 3] [1 2]    1
+ "abc"   "ab"     1
+ "ab"    "abc"   -1
+ "abd"   "ab"     2
+ "ab"    "abd"   -2
+ "xy"    "ab"     pos?
+ "ab"    "xy"     neg?
+ :a      :b      -1
+ :b      :a       1
+ :c      :a      -2
+ :a      :c       2
+ :a      :a       0)
