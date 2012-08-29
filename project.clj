@@ -1,5 +1,5 @@
-(defproject scratch "1.0.0-SNAPSHOT"
-  :description "a scratch project to rapidly test stuff"
+(defproject scratch/scratch "1.0.0-SNAPSHOT"
+  :min-lein-version "2.0.0"
   :dependencies [[org.clojure/clojure "1.4.0"]
                  [midje/midje "1.4.0"]]
-  :dev-dependencies [])
+  :description "a scratch project to rapidly test stuff")
