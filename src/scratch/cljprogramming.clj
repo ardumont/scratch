@@ -77,4 +77,19 @@
   [limit]
   (repeatedly #(rand-int limit)))
 
+;; ----------------------------- compare
 
+(fact
+  (compare 1 2) => -1
+  (compare 2 1) => 1)
+
+(fact
+  (compare [1 2] [1 2 3]) => -1
+  (compare [1 2 3] [1 2]) => 1)
+
+(fact
+  (compare "ab" "abc") => -1
+  (compare "abc" "ab") => 1
+  (compare "xy" "ab")  => pos?
+  (compare "ab" "xy")  => neg?
+  (compare "ab" "ab")  => 0)
