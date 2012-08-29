@@ -24,5 +24,5 @@
                     (take-nth 2 sequential))))
 
 (fact
-  (swap-pairs (apply list (range 10))) => '(8 9 6 7 4 5 2 3 0 1)
-  (swap-pairs (apply vector (range 10))) => [1 0 3 2 5 4 7 6 9 8])
+  (swap-pairs (apply list (range 10))) => '(8 9 6 7 4 5 2 3 0 1);; look it's a list!
+  (swap-pairs (apply vector (range 10))) => [1 0 3 2 5 4 7 6 9 8]);; it's a vec!
