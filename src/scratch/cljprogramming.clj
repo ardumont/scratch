@@ -117,6 +117,6 @@
 ;; make a comparaison function with a predicate function
 (fact
   (let [comp-strict-decroissant (comparator <)]
-    (comp-strict-decroissant 3 -3)  => 1
-    (comp-strict-decroissant -3 3)  => -1
+    (comp-strict-decroissant 3 -3) => 1
+    (comp-strict-decroissant -3 3) => -1
     (comp-strict-decroissant 3 3)  => 0))
