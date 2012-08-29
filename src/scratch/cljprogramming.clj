@@ -114,3 +114,9 @@
 (sort-by second (map-indexed vector "clojure rocks!"))
 ;; ([7 \space] [13 \!] [0 \c] [10 \c] [6 \e] [3 \j] [11 \k] [1 \l] [2 \o] [9 \o] [5 \r] [8 \r] [12 \s] [4 \u])
 
+;; make a comparaison function with a predicate function
+(fact
+  (let [comp-strict-decroissant (comparator <)]
+    (comp-strict-decroissant 3 -3)  => 1
+    (comp-strict-decroissant -3 3)  => -1
+    (comp-strict-decroissant 3 3)  => 0))
