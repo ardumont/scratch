@@ -46,5 +46,21 @@
   (reduce (fn [n [k v]] (assoc n k (f v))) (empty m) m))
 
 (fact
-  (map-map2 inc (hash-map :a 1 :z 10 :c 41)) => (just [:a 2] [:z 11] [:c 42] :in-any-order)
+  (map-map2 inc (hash-map :a 1 :z 10 :c 41))   => (just [:a 2] [:z 11] [:c 42] :in-any-order)
   (map-map2 inc (sorted-map :z 10 :c 41 :a 1)) => (sorted-map :z 11 :c 42 :a 2))
+
+;; ----------------------------- sequences
+
+(fact
+  (cons 0 [4 3 2 1])      => [0 4 3 2 1]
+  (cons 0 '(4 3 2 1))     => '(0 4 3 2 1)
+  (cons 10 (seq [:a :b])) => [10 :a :b])
+
+(fact
+  (cons 0 (cons 1 (cons 2 (cons 3 [:a :b])))) => [0 1 2 3 :a :b]
+  (->> [:a :b]
+       (cons 3)
+       (cons 2)
+       (cons 1)
+       (cons 0))                              => [0 1 2 3 :a :b]
+  (list* 0 1 2 3 [:a :b])                     => [0 1 2 3 :a :b])
