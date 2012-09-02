@@ -1,7 +1,8 @@
 (ns scratch.jaudiotagger
   (:import [org.jaudiotagger.audio AudioFileIO]
            [org.jaudiotagger.tag FieldKey])
-  (:require [clojure.pprint :as p]))
+  (:require [clojure.pprint :as p]
+            [clojure.java.io :as io]))
 
 ;; inspired from: https://gist.github.com/1968570
 
@@ -28,8 +29,8 @@
 
 (defn filename-from-tags "Some utility function that helps extract the name of the file"
   [tags]
-
   (let [track (-> tags :track first)
         name (-> tags :title first)]
     (when (and track name)
       (format "%s-%s" track name))))
+
