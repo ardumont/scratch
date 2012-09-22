@@ -1,6 +1,8 @@
 (ns cv
-  "My cv as pure data, after all everything is data, so why not my cv?"
-  (:require [clojure.string :as str]))
+  "My cv as pure data. After all, everything is data!"
+  (:require [clojure
+             [string :as s]
+             [pprint :as p]]))
 
 (def my-cv
   {:identity     {:name        "Dumont"
@@ -10,8 +12,8 @@
                   :location    "43 bis boulevard Jean Moulin"
                   :city        "93190 Livry Gargan"
                   :country     "France"
-                  :emails      (map #(str/join \@ %) [["antoine.romain.dumont" "gmail.com"]
-                                                      ["eniotna.t"             "gmail.com"]])
+                  :emails      (map #(s/join \@ %) [["antoine.romain.dumont" "gmail.com"]
+                                                    ["eniotna.t"             "gmail.com"]])
                   :phone       (reverse ["03" "79" "08" "99" "06"])}
 
    :jobs         {:current     :sfeir
@@ -52,4 +54,5 @@
 
 (get-in my-cv [:identity :phone])
 (get-in my-cv [:identity :emails])
-(clojure.pprint/pprint (get-in my-cv [:jobs]))
+(get-in my-cv [:profiles :github])
+(p/pprint (get-in my-cv [:jobs]))
