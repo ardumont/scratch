@@ -4,5 +4,6 @@
                  [midje "1.4.0"]
                  [org/jaudiotagger "2.0.3"]
                  [shake "0.2.0"]
-                 [incanter "1.3.0"]]
+                 [incanter "1.3.0"]
+                 [robert/hooke "1.1.2"]]
   :description "a scratch project to rapidly test stuff")
