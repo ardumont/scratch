@@ -11,5 +11,5 @@
                  [cascalog                   "1.10.0"]
                  [korma                      "0.3.0-beta11"]
                  [mysql/mysql-connector-java "5.1.21"]
-                 [clj-http                   ]]
+                 [clj-http                   "0.4.0"]]
   :description "a scratch project to rapidly test stuff")

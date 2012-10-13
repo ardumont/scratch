@@ -7,76 +7,92 @@
             [clojure.zip     :as z]
             [clojure.string  :as s]))
 
-(def tags (zipmap [:title
-                   :link
-                   :category
-                   :pub-date
-                   :description
-                   :enclosure
-                   :comments
-                   :guid
-                   :torrent]
-                  (range 10)))
+(def ^{:doc "Explicit key mapping over range for the :item entry."}
+  tags (zipmap [:title
+                :link
+                :category
+                :pub-date
+                :description
+                :enclosure
+                :comments
+                :guid
+                :torrent]
+               (range 10)))
 
-(def tags-torrent (zipmap [:file-name
-                           :content-length
-                           :info-hash
-                           :magnet-uri]
-                          (range 5)))
+(def ^{:doc "Explicit key mapping over range for the map on the torrent index."}
+  tags-torrent (zipmap [:file-name
+                        :content-length
+                        :info-hash
+                        :magnet-uri]
+                       (range 5)))
 
-(def feed "http://www.ezrss.it/feed/")
-
-(def feed-parsed (parse feed))
-
-(def items (for [x (xml-seq feed-parsed) :when (= (:tag x) :item)] x))
+(defn- itemize
+  "Given a parsed feed, return the list of :item."
+  [feed]
+  (for [x (xml-seq feed) :when (= (:tag x) :item)] x))
 
 (comment
-  (def root (z/xml-zip feed-parsed))
-
+  (def items (itemize (x/parse "http://www.ezrss.it/feed/")))
   (def torrent-list (mapcat #(get-in % [:content (:title tags) :content]) items)))
 
-(def magnet-links
+(defn- magnet-links
+  "Given a list of items, retrieve the magnet-links"
+  [items]
   (mapcat #(get-in %
                    [:content (:torrent tags)
                     :content (:magnet-uri tags-torrent)
                     :content])
           items))
 
-(filter #(re-find #"(?i)criminal" %) magnet-links)
+(comment
+  (def mls (magnet-links items)))
 
-(defn possible-combi
+(defn- possible-combi
   "Given a title, try to create some naming combinations."
   [title]
-  (-> (map #(s/replace title #"\s" %) ["." "-" "_"])
+  (-> (for [x ["." "-" "_"]] (s/replace title #"\s" x))
       (conj title)
       set))
 
-(possible-combi "how i met your mother")
-(possible-combi "dexter")
+(comment
+  (possible-combi "have you met ted")
+  (possible-combi "dude"))
 
-(def white-list ["some-dude-i-like"
-                 "clumsy"
-                 "have you met ted"
-                 "crapy theory"
-                 "retxed"])
+(defn filters
+  "Given a feed and a desired list of entries, filter them"
+  [filt feed-parsed]
+  (->> filt
+       (mapcat possible-combi)
+       (map #(re-pattern (str "(?i)" %)))
+       (mapcat (fn [pattern] (filter #(re-find pattern %) feed-parsed)))
+       set))
 
-(def all-white-list (mapcat possible-combi white-list))
+(comment
+  (def links-to-test ["lskadfjalksdjflks.retxed.skfajsdlkfj"
+                      "clumsy.skfajsdlkfj"
+                      "aslkdfsRETXEDlakdfjsd"
+                      "some-useless-entry"
+                      "another-useless"
+                      "*****have you met ted#######"
+                      "*****some-dude_i like#######"
+                      "####flkdsjfl;sa a';sdf;sdaf#@%^"
+                      "&()_*( %$%^T.,asdjflksdjflks"])
 
-(def magnet-links2
-  (-> magnet-links
-      (conj "lskadfjalksdjflks.retxed.skfajsdlkfj")
-      (conj "clumsy.skfajsdlkfj")
-      (conj "*****have you met ted#######")
-      (conj "*****some-dude_i like#######")))
+  (def white-list ["some-dude-i-like"
+                   "clumsy"
+                   "have you met ted"
+                   "crapy theory"
+                   "retxed"])
 
-;; filter the magnet links according to the white list
-(set
- (mapcat
-  (fn [pattern] (filter #(re-find pattern %) magnet-links2))
-  (map #(re-pattern (str "(?i)" %)) all-white-list)))
+  (filters white-list links-to-test))
 
+(defn magnet-links-from-url
+  [url filt]
+  (->> url
+       x/parse
+       itemize
+       magnet-links
+       (filters filt)))
 
-
-
-
-
+(comment
+  (magnet-links-from-url "http://www.ezrss.it/feed/" ["criminal"]))
