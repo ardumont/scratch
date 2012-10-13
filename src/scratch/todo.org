@@ -1,0 +1,8 @@
+#+title: todo
+#+author: Antoine R. Dumont
+
+* TODO white list [50%]
+** DONE POC: Parse a rss flux and filter what i need on it.
+CLOSED: [2012-10-13 sam. 11:38]
+
+** TODO Make the abstraction needed
