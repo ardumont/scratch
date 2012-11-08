@@ -11,5 +11,6 @@
                  [cascalog                   "1.10.0"]
                  [korma                      "0.3.0-beta11"]
                  [mysql/mysql-connector-java "5.1.21"]
-                 [clj-http                   "0.4.0"]]
+                 [clj-http                   "0.4.0"]
+                 [org.clojure/core.logic     "0.7.5"]]
   :description "a scratch project to rapidly test stuff")
