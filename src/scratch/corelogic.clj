@@ -179,6 +179,11 @@
     vec
     digraph
     dot
+    ;; render a svg format
+    ;;    (render {:format :svg})
+    ;;    (render {:format :png})
+    ;; persist the file
+    ;;    (save! "out.png" {:format :png})
     (show! {:layout :neato}))
 
 
