@@ -11,18 +11,31 @@
 (facts father '[[antoine chloe]
                 [antoine theo]
                 [marc antoine]
+                [robert-senior robert]
                 [robert marc]
                 [rene laurence]
-                [louis rene]
                 [rene michel]
-                [rene marie-paule]])
+                [rene marie-paule]
+                [louis rene]
+                [claude christelle]
+                [claude arnaud]
+                [claude xavier]
+                [pepe claude]])
 
 (comment
   ;; give me all the relationships father/child
   (run* [q]
         (fresh [f c]
                (father f c)
-               (== q [f c]))))
+               (== q [f c])))
+
+  ;; laurence's father?
+  (run* [q]
+        (father q 'laurence))
+
+  ;; claude's child?
+  (run* [q]
+        (father 'claude q)))
 
 (defrel mother m c)
 (facts mother '[[christelle chloe]
