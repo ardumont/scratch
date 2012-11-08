@@ -1,6 +1,7 @@
 (ns scratch.corelogic
   (:refer-clojure :exclude [==])
-  (:use [clojure.core.logic]))
+  (:use [clojure.core.logic]
+        [dorothy.core]))
 
 (comment ;; first query
   (run* [q]
@@ -136,6 +137,49 @@
 
 (comment
   (ancestors 'theo))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; dorothy (graphviz generation) play
+
+;; all the nodes
+(->> (run* [q]
+           (fresh [f c]
+                  (parent f c)
+                  (== q [f c])))
+     (mapcat identity)
+     (map keyword)
+     set
+     vec)
+
+;; all the relations parent/child
+(->> (run* [q]
+           (fresh [f c]
+                  (parent f c)
+                  (== q [f c])))
+     (map (fn [v] (map keyword v))))
+
+(-> (concat
+     ;; shape
+     [[:node {:shape :box}]]
+     ;; all the nodes
+     (->> (run* [q]
+                (fresh [f c]
+                       (parent f c)
+                       (== q [f c])))
+          (mapcat identity)
+          (map keyword)
+          set
+          vec)
+     (->> (run* [q]
+                (fresh [f c]
+                       (parent f c)
+                       (== q [f c])))
+          (map (fn [v] (map keyword v)))
+          (map vec)))
+    doall
+    vec
+    digraph
+    dot
+    (show! {:layout :neato}))
 
 
 
