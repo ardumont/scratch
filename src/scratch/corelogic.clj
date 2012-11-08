@@ -21,3 +21,21 @@
       (fresh [f c]
              (father f c)
              (== q [f c])))
+
+(defrel mother m c)
+(facts mother '[[christelle chloe]
+                [christelle theo]
+                [laurence antoine]
+                [jeanne laurence]
+                [jeanne michel]
+                [jeanne marie-paule]
+                [marthe marc]])
+
+;; give me all the mother/child relationship
+(run* [q]
+      (fresh [m c]
+             (mother m c)
+             (== q [m c])))
+
+
+
