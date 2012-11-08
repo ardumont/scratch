@@ -31,11 +31,18 @@
                 [jeanne marie-paule]
                 [marthe marc]])
 
-;; give me all the mother/child relationship
+;; give me all the mother/child relationships
 (run* [q]
       (fresh [m c]
              (mother m c)
              (== q [m c])))
 
+;; give me all the parents relationships
+(run* [q]
+      (fresh [p c]
+             (conde
+              ((mother p c))
+              ((father p c)))
+             (== q [p c])))
 
 
