@@ -2,8 +2,9 @@
   (:refer-clojure :exclude [==])
   (:use [clojure.core.logic]))
 
-(run* [q]
-      (== true q))
+(comment ;; first query
+  (run* [q]
+        (== true q)))
 ;; (true)
 
 (defrel father f c)
@@ -16,11 +17,12 @@
                 [rene michel]
                 [rene marie-paule]])
 
-;; give me all the relationships father/child
-(run* [q]
-      (fresh [f c]
-             (father f c)
-             (== q [f c])))
+(comment
+  ;; give me all the relationships father/child
+  (run* [q]
+        (fresh [f c]
+               (father f c)
+               (== q [f c]))))
 
 (defrel mother m c)
 (facts mother '[[christelle chloe]
@@ -31,20 +33,21 @@
                 [jeanne marie-paule]
                 [marthe marc]])
 
-;; give me all the mother/child relationships
-(run* [q]
-      (fresh [m c]
-             (mother m c)
-             (== q [m c])))
+(comment
+  ;; give me all the mother/child relationships
+  (run* [q]
+        (fresh [m c]
+               (mother m c)
+               (== q [m c]))))
 
-;; give me all the parents relationships
-(run* [q]
-      (fresh [p c]
-             (conde
-              ((mother p c))
-              ((father p c)))
-             (== q [p c])))
-
+(comment
+  ;; give me all the parents relationships
+  (run* [q]
+        (fresh [p c]
+               (conde
+                ((mother p c))
+                ((father p c)))
+               (== q [p c]))))
 
 ;; give me all the parents
 (defn parent
@@ -53,11 +56,12 @@
    ((father p c))
    ((mother p c))))
 
-;; the same query as before but with a function
-(run* [q]
-      (fresh [p c]
-             (parent p c)
-             (== q [p c])))
+(comment
+  ;; the same query as before but with a function
+  (run* [q]
+        (fresh [p c]
+               (parent p c)
+               (== q [p c]))))
 
 ;; compute the ancestors
 (defn ancestorso [a c]
@@ -67,13 +71,15 @@
           ((parent x c)
            (ancestorso a x)))))
 
-;; compute the ancestors
-(run* [q]
-      (fresh [a c]
-             (ancestorso a c)
-             (== q [a c])))
+(comment
+  ;; compute the ancestors
+  (run* [q]
+        (fresh [a c]
+               (ancestorso a c)
+               (== q [a c]))))
 
-;; compute my ancestors
-(run* [q]
-      (ancestorso q 'antoine))
+(comment
+  ;; compute my ancestors
+  (run* [q]
+        (ancestorso q 'antoine)))
 
