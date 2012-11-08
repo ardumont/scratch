@@ -59,3 +59,21 @@
              (parent p c)
              (== q [p c])))
 
+;; compute the ancestors
+(defn ancestorso [a c]
+  (fresh [x]
+         (conde
+          ((parent a c))
+          ((parent x c)
+           (ancestorso a x)))))
+
+;; compute the ancestors
+(run* [q]
+      (fresh [a c]
+             (ancestorso a c)
+             (== q [a c])))
+
+;; compute my ancestors
+(run* [q]
+      (ancestorso q 'antoine))
+
