@@ -89,6 +89,14 @@
                (parent p c)
                (== q [p c]))))
 
+(defn parents
+  "Computes all the parents relationships."
+  []
+  (run* [q]
+        (fresh [p c]
+               (parent p c)
+               (== q [p c]))))
+
 ;; compute the ancestors
 (defn ancestorso [a c]
   (fresh [x]
@@ -140,39 +148,17 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; dorothy (graphviz generation) play
 
-;; all the nodes
-(->> (run* [q]
-           (fresh [f c]
-                  (parent f c)
-                  (== q [f c])))
-     (mapcat identity)
-     (map keyword)
-     set
-     vec)
-
-;; all the relations parent/child
-(->> (run* [q]
-           (fresh [f c]
-                  (parent f c)
-                  (== q [f c])))
-     (map (fn [v] (map keyword v))))
-
 (-> (concat
      ;; shape
 ;; [[:node {:shape :box}]]
      ;; all the nodes
-     (->> (run* [q]
-                (fresh [f c]
-                       (parent f c)
-                       (== q [f c])))
+     (->> (parents)
           (mapcat identity)
           (map keyword)
           set
           vec)
-     (->> (run* [q]
-                (fresh [f c]
-                       (parent f c)
-                       (== q [f c])))
+     ;; all the edges
+     (->> (parents)
           (map (fn [v] (map keyword v)))
           (map vec)))
     doall
@@ -185,3 +171,6 @@
     ;; persist the file
     ;;    (save! "out.png" {:format :png})
     (show! {:layout :neato}))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; lacij
+
