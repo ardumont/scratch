@@ -11,16 +11,19 @@
 (facts father '[[antoine chloe]
                 [antoine theo]
                 [marc antoine]
-                [robert-senior robert]
+                [robert-charles robert]
                 [robert marc]
                 [rene laurence]
                 [rene michel]
                 [rene marie-paule]
-                [louis rene]
+                [charles-louis rene]
                 [claude christelle]
                 [claude arnaud]
                 [claude xavier]
-                [pepe claude]])
+                [louis claude]
+                [marius muguette]
+                [cesar marthe]
+                [abel jeanne]])
 
 (comment
   ;; give me all the relationships father/child
@@ -44,7 +47,16 @@
                 [jeanne laurence]
                 [jeanne michel]
                 [jeanne marie-paule]
-                [marthe marc]])
+                [marthe marc]
+                [louise rene]
+                [muguette christelle]
+                [muguette arnaud]
+                [muguette xavier]
+                [blanche claude]
+                [madeleine muguette]
+                [elise marthe]
+                [adele robert]
+                [marie jeanne]])
 
 (comment
   ;; give me all the mother/child relationships
