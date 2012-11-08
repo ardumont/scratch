@@ -2,7 +2,7 @@
   :min-lein-version "2.0.0"
   :profiles {:dev {:dependencies [[org.apache.hadoop/hadoop-core "0.20.2-dev"]]}}
   :dependencies [[org.clojure/clojure        "1.4.0"]
-                 [clj-http                   "0.4.0"]
+                 [dorothy                    "0.0.3"]
                  [midje                      "1.4.0"]
                  [org/jaudiotagger           "2.0.3"]
                  [shake                      "0.2.0"]
