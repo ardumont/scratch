@@ -1,7 +1,6 @@
 (ns scratch.corelogic
   (:refer-clojure :exclude [==])
-  (:use [clojure.core.logic]
-        [dorothy.core]))
+  (:use [clojure.core.logic]))
 
 (comment ;; first query
   (run* [q]
@@ -145,32 +144,3 @@
 
 (comment
   (ancestors 'theo))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; dorothy (graphviz generation) play
-
-(-> (concat
-     ;; shape
-;; [[:node {:shape :box}]]
-     ;; all the nodes
-     (->> (parents)
-          (mapcat identity)
-          (map keyword)
-          set
-          vec)
-     ;; all the edges
-     (->> (parents)
-          (map (fn [v] (map keyword v)))
-          (map vec)))
-    doall
-    vec
-    digraph
-    dot
-    ;; render a svg format
-    ;;    (render {:format :svg})
-    ;;    (render {:format :png})
-    ;; persist the file
-    ;;    (save! "out.png" {:format :png})
-    (show! {:layout :neato}))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; lacij
-
