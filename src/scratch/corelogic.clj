@@ -159,7 +159,7 @@
 
 (-> (concat
      ;; shape
-     [[:node {:shape :box}]]
+;; [[:node {:shape :box}]]
      ;; all the nodes
      (->> (run* [q]
                 (fresh [f c]
@@ -185,6 +185,3 @@
     ;; persist the file
     ;;    (save! "out.png" {:format :png})
     (show! {:layout :neato}))
-
-
-
