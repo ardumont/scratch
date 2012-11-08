@@ -119,3 +119,24 @@
     ;; compute all of grobert' (my paternal great grand father) descendants
   (run* [q]
         (ancestorso 'robert-charles q)))
+
+
+(defn descendants
+  "compute the descendants of p."
+  [p]
+  (run* [q]
+        (ancestorso p q)))
+
+(comment
+  (descendants 'robert-charles))
+
+(defn ancestors
+  [p]
+  (run* [q]
+        (ancestorso q p)))
+
+(comment
+  (ancestors 'theo))
+
+
+
