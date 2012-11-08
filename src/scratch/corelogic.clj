@@ -46,3 +46,16 @@
              (== q [p c])))
 
 
+;; give me all the parents
+(defn parent
+  [p c]
+  (conde
+   ((father p c))
+   ((mother p c))))
+
+;; the same query as before but with a function
+(run* [q]
+      (fresh [p c]
+             (parent p c)
+             (== q [p c])))
+
