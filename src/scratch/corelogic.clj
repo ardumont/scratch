@@ -97,7 +97,7 @@
            (ancestorso a x)))))
 
 (comment
-  ;; compute the ancestors
+  ;; compute all the ancestors/children pairs
   (run* [q]
         (fresh [a c]
                (ancestorso a c)
@@ -106,5 +106,16 @@
 (comment
   ;; compute my ancestors
   (run* [q]
-        (ancestorso q 'antoine)))
+        (ancestorso q 'antoine))
+  ;; the ancestors of my children
+  (run* [q]
+        (ancestorso q 'chloe)
+        (ancestorso q 'theo)))
 
+(comment
+  ;; compute all of louis' (my maternal great grand father) descendants
+  (run* [q]
+        (ancestorso 'louis q))
+    ;; compute all of grobert' (my paternal great grand father) descendants
+  (run* [q]
+        (ancestorso 'robert-charles q)))
