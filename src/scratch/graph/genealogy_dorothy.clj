@@ -1,7 +1,5 @@
-(ns scratch.corelogic
-  (:refer-clojure :exclude [==])
-  (:use [clojure.core.logic]
-        [dorothy.core])
+(ns scratch.graph.genealogy-dorothy
+  (:use [dorothy.core])
   (:require [scratch.corelogic :as g]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; dorothy (graphviz generation) play
