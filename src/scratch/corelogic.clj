@@ -14,7 +14,7 @@
                 [rene laurence]
                 [louis rene]
                 [rene michel]
-                [renel marie-paule]])
+                [rene marie-paule]])
 
 ;; give me all the relationships father/child
 (run* [q]
