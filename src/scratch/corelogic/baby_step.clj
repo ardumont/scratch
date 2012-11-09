@@ -4,15 +4,21 @@
 
 (comment ;; first query
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; simple query
+
   ;; unify, give me all the q which validate the relation 'q is true'
   (run* [q]
         (== true q))
   ;; (true)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; membero
+
   ;; membero, give me all the q that satisfies the relation 'q is a member of the list '(:a :b :c)
   (run* [q]
         (membero q '(:a :b :c)))
   ;; '(:a :b :c)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; logical intersection
 
   ;; some logical intersection
   (run* [q]
@@ -27,6 +33,8 @@
                (membero q '(:b :c :d))
                (== m q)))
   ;; '(:b :c)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; logical union - conde
 
   ;; now for some logical union
   (run* [q]
