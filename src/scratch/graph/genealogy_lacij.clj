@@ -74,10 +74,10 @@
   "Generate the genealogy tree with the parents"
   []
   (-> (create-graph)
+      (add-default-node-attrs :width 50 :height 30 :shape :circle)
       (add-edges (->> (g/parents)
                       (map (fn [v] (map keyword v)))
-                      (map vec)
-                      doall))))
+                      (map vec)))))
 
 (comment
   ;; test the gen-tree
@@ -85,8 +85,8 @@
 
   ;; test the generation
   (let [g (-> (gen-tree)
-              (layout :hierarchical) ;; some imbroglio in the arrays
-;;              (layout :radial) ;; more interesting
+;;              (layout :hierarchical) ;; some imbroglio in the arrays
+              (layout :radial :radius 90) ;; more interesting
 ;;              (layout :random) ;; massive explosion and change to each execution
 ;;              (layout :naive) ;; the compilation does not finish
               (build))]
