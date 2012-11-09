@@ -1,6 +1,6 @@
 (ns scratch.graph.genealogy-dorothy
   (:use [dorothy.core])
-  (:require [scratch.corelogic :as g]))
+  (:require [scratch.graph.genealogy :as g]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; dorothy (graphviz generation) play
 

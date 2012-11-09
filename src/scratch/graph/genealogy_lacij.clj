@@ -2,7 +2,7 @@
   (:use [lacij.layouts.layout]
         [lacij.graph.core]
         [lacij.graph.svg.graph])
-  (:require [scratch.corelogic :as g]))
+  (:require [scratch.graph.genealogy :as g]))
 
 ;; from https://github.com/pallix/lacij/blob/master/src/lacij/examples/hierarchicallayout.clj
 
