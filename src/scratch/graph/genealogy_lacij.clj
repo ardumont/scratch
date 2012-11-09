@@ -85,6 +85,9 @@
 
   ;; test the generation
   (let [g (-> (gen-tree)
-              (layout :hierarchical)
+              (layout :hierarchical) ;; some imbroglio in the arrays
+;;              (layout :radial) ;; more interesting
+;;              (layout :random) ;; massive explosion and change to each execution
+;;              (layout :naive) ;; the compilation does not finish
               (build))]
-    (export g "/tmp/hierarchical.svg" :indent "yes")))
+    (export g "/tmp/genealogy-tree.svg" :indent "yes")))
