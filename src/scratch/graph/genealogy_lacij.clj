@@ -7,51 +7,84 @@
 ;; from https://github.com/pallix/lacij/blob/master/src/lacij/examples/hierarchicallayout.clj
 
 (defn add-nodes
-  [g & nodes]
+  [g nodes]
   (reduce
    (fn [g node] (add-node g node (name node)))
    g
    nodes))
 
 (defn add-edges
-  [g & edges]
-  (let [g (apply add-nodes g (set (flatten edges)))]
+  [g edges]
+  (let [g (add-nodes g (set (flatten edges)))]
     (reduce (fn [g [src dst]]
               (let [id (keyword (str (name src) "-" (name dst)))]
                 (add-edge g id src dst)))
             g
             edges)))
 
-(comment ;; some example
-  (defn gen-graph4
+(comment ;; some graph example
+  (defn gen-graph
     []
     (-> (create-graph)
-        (add-edges [:a1 :p]
-                   [:pr :a1]
-                   [:po :a1]
-                   [:fo :a1]
-                   [:a2 :po]
-                   [:a3 :po]
-                   [:ac :a2]
-                   [:pu :a3]
-                   [:a4 :ac]
-                   [:a5 :ac]
-                   [:a6 :ac]
-                   [:a7 :ac]
-                   [:a8 :pu]
-                   [:a9 :pu]
-                   [:a10 :pu]
-                   [:pur :a4]
-                   [:puf :a5]
-                   [:pe :a6]
-                   [:ab :a6]
-                   [:th :a7]
-                   [:pos :a7]
-                   [:br :a8]
-                   [:fl :a9]
-                   [:ju :a10])))
+        (add-edges [[:claude :christelle]
+                    [:madeleine :muguette]
+                    [:marc :antoine]
+                    [:christelle :theo]
+                    [:charles-louis :rene]
+                    [:marie :jeanne]
+                    [:antoine :chloe]
+                    [:jeanne :marie-paule]
+                    [:rene :marie-paule]
+                    [:jeanne :michel]
+                    [:antoine :theo]
+                    [:jeanne :laurence]
+                    [:rene :michel]
+                    [:louise :rene]
+                    [:cesar :marthe]
+                    [:marthe :marc]
+                    [:rene :laurence]
+                    [:laurence :antoine]
+                    [:robert :marc]
+                    [:muguette :xavier]
+                    [:claude :xavier]
+                    [:muguette :arnaud]
+                    [:marius :muguette]
+                    [:adele :robert]
+                    [:claude :arnaud]
+                    [:christelle :chloe]
+                    [:louis :claude]
+                    [:elise :marthe]
+                    [:abel :jeanne]
+                    [:blanche :claude]
+                    [:robert-charles :robert]
+                    [:muguette :christelle]])))
 
-  (let [g (-> (gen-graph4)
+  (let [g (-> (gen-graph)
+              (layout :hierarchical)
+              (build))]
+    (export g "/tmp/genealogy-tree.svg" :indent "yes")))
+
+(comment
+  (let [p (g/parents)]
+    (->> p
+         (map (fn [v] (map keyword v)))
+         (map vec))))
+
+(defn gen-tree
+  "Generate the genealogy tree with the parents"
+  []
+  (-> (create-graph)
+      (add-edges (->> (g/parents)
+                      (map (fn [v] (map keyword v)))
+                      (map vec)
+                      doall))))
+
+(comment
+  ;; test the gen-tree
+  (gen-tree)
+
+  ;; test the generation
+  (let [g (-> (gen-tree)
               (layout :hierarchical)
               (build))]
     (export g "/tmp/hierarchical.svg" :indent "yes")))
