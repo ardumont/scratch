@@ -10,7 +10,7 @@
        ;; [[:node {:shape :box}]]
        ;; all the nodes
        (->> p
-            (mapcat identity)
+            flatten
             (map keyword)
             set
             vec)
