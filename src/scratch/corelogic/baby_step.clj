@@ -35,9 +35,37 @@
          ((membero q '(:b :c :d)))))
   ;; '(:a :b :b :c :c :d)
 
+  ;; this also can be written like this
   (run* [q]
         (conde
          [(membero q '(:a :b :c))]
          [(membero q '(:b :c :d))]))
   ;; '(:a :b :b :c :c :d)
+
+  (run* [q]
+        (conde
+         [succeed succeed succeed succeed]))
+  ;; (_.0)
+
+  (run* [q]
+        (conde
+         [succeed succeed fail succeed])) ;; careful it's an logical AND inside the []
+  ;; ()
+
+  (run* [q]
+        (conde
+         [succeed succeed fail succeed]      ;; fail
+         [succeed succeed succeed succeed])) ;; but here success
+  ;; (_.0)
+
+  (run* [q]
+        (conde
+         [(== q 1) (== q 2)])) ;; not possible to be equal to 1 and 2
+  ;; ()
+
+  (run* [q]
+        (conde
+         [(== q 1)]
+         [(== q 2)]))
+  ;; (1 2)
   )
