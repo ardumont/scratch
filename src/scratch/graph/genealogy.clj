@@ -139,3 +139,24 @@
 
 (comment
   (ancestors 'theo))
+
+(comment ;; compute the relations [wife husband] (children list)
+  (reduce (fn [m [k v]] (assoc m k (map last v)))
+          {}
+          (group-by (fn [[m f c]] [m f]) (run* [q]
+                                              (fresh [m f c]
+                                                     (mother m c)
+                                                     (father f c)
+                                                     (== q [m f c])))))
+
+  {[blanche louis] (claude)
+   [marie abel] (jeanne)
+   [elise cesar] (marthe)
+   [madeleine marius] (muguette)
+   [louise charles-louis] (rene)
+   [laurence marc] (antoine)
+   [christelle antoine] (theo chloe)
+   [adele robert-charles] (robert)
+   [jeanne rene] (marie-paule michel laurence)
+   [marthe robert] (marc)
+   [muguette claude] (xavier arnaud christelle)})
