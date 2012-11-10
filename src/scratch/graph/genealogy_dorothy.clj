@@ -27,4 +27,4 @@
       ;;    (render {:format :png})
       ;; persist the file
       ;;    (save! "out.png" {:format :png})
-      (show! {:layout :neato})))
+      (show!)))
