@@ -34,3 +34,13 @@
 
 (comment
   (make-node {:id :test}))
+
+(defn make-nodes
+  "Constructs graphml nodes entries."
+  [nodes]
+  (->> nodes
+       (map make-node)
+       (s/join "\n")))
+
+(comment
+  (make-nodes [{:id :n1} {:id :n2}]))
