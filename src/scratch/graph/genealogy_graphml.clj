@@ -23,3 +23,16 @@
                         :target (keyword c)}))))
 
 (make-edges (g/parents))
+
+(defn make-genealogy-graph
+ []
+ (let [n (g/parents)]
+   (gml/make-graphml
+    [{:edgedefault "directed"
+      :nodes (make-nodes n)
+      :edges (make-edges n)}])))
+
+(comment
+  (make-genealogy-graph)
+  ;; generate the graphml file and open it with yEd
+  (spit "/tmp/genealogy-graph.graphml" (make-genealogy-graph)))
