@@ -3,14 +3,18 @@
             [scratch.graph.genealogy :as g]
             [scratch.graph.graphml :as gml]))
 
+(defn node-id
+  "Create a node id"
+  [n]
+  (str n))
+
 (defn make-nodes
   "Compute the nodes in the graphml namespace format."
   [nodes]
   (->> nodes
        flatten
-       (map keyword)
        set
-       (map (fn [n] {:id (keyword n)}))))
+       (map (fn [n] {:id (node-id n)}))))
 
 (make-nodes (g/parents))
 
@@ -19,8 +23,8 @@
   [edges]
   (->> edges
        (map (fn [[p c]] {:id (str p "-" c)
-                        :source (keyword p)
-                        :target (keyword c)}))))
+                        :source (node-id p)
+                        :target (node-id c)}))))
 
 (make-edges (g/parents))
 
@@ -36,3 +40,4 @@
   (make-genealogy-graph)
   ;; generate the graphml file and open it with yEd
   (spit "/tmp/genealogy-graph.graphml" (make-genealogy-graph)))
+
