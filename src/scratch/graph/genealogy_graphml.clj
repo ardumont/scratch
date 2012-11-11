@@ -26,3 +26,11 @@
          {:id :e1
           :source :n2
           :target :n3}]}
+
+(defn make-node
+  "Constructs graphml node entry."
+  [{:keys [id]}]
+  (format "<node id='%s' />" id))
+
+(comment
+  (make-node {:id :test}))
