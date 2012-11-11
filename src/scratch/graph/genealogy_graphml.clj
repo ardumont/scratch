@@ -67,3 +67,26 @@
                {:id :e1
                 :source :n2
                 :target :n3}]))
+
+(defn make-graph
+   "Construct the graph (indepedent from the complete graphml)"
+  [{:keys [id edgedefault nodes edges]}]
+  (s/join "\n"
+          [(format "<graph id='%s' edgedefault='%s'>" id edgedefault)
+           (make-nodes nodes)
+           (make-edges edges)
+           "</graph>"]))
+
+(comment
+  (make-graph {:id :some-graph
+               :edgedefault :directed
+               :nodes [{:id :n1}
+                       {:id :n2}
+                       {:id :n3}
+                       {:id :n4}]
+               :edges [{:id :e1
+                        :source :n1
+                        :target :n3}
+                       {:id :e1
+                        :source :n2
+                        :target :n3}]}))
