@@ -52,3 +52,18 @@
 
 (comment
   (make-edge {:id "test" :source :src :target :dest}))
+
+(defn make-edges
+  "Constructs graphml edges entries"
+  [edges]
+  (->> edges
+       (map make-edge)
+       (s/join "\n")))
+
+(comment
+  (make-edges [{:id :e1
+                :source :n1
+                :target :n3}
+               {:id :e1
+                :source :n2
+                :target :n3}]))
