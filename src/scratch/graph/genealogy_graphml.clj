@@ -44,3 +44,11 @@
 
 (comment
   (make-nodes [{:id :n1} {:id :n2}]))
+
+(defn make-edge
+  "Constructs graphml edge entry."
+  [{:keys [id source target]}]
+  (format "<edge id='%s' source='%s' target='%s'/>" id source target))
+
+(comment
+  (make-edge {:id "test" :source :src :target :dest}))
