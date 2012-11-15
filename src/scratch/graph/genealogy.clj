@@ -2,6 +2,41 @@
   (:refer-clojure :exclude [==])
   (:use [clojure.core.logic]))
 
+(defrel male m)
+(facts male '[[antoine]
+              [marc]
+              [theo]
+              [robert-charles]
+              [robert]
+              [rene]
+              [michel]
+              [charles-louis]
+              [louis]
+              [claude]
+              [marius]
+              [cesar]
+              [abel]
+              [arnaud]
+              [xavier]])
+
+(comment
+  (run* [q]
+        (male q)))
+
+(defrel female f)
+(facts female '[[christelle]
+                [chloe]
+                [muguette]
+                [laurence]
+                [louise]
+                [blanche]
+                [jeanne]
+                [marie-paule]])
+
+(comment
+  (run* [q]
+        (female q)))
+
 (defrel father f c)
 (facts father '[[antoine chloe]
                 [antoine theo]
