@@ -22,7 +22,8 @@
               [clarence]
               [thomas]
               [william]
-              [pierre]])
+              [pierre]
+              [jean]])
 
 (defn males
   "Compute all the males"
@@ -53,7 +54,9 @@
                 [clemence]
                 [audrey]
                 [eglantine]
-                [brigitte]])
+                [brigitte]
+                [helene]
+                [mylene]])
 
 (defn females
   "Compute all the females"
@@ -66,8 +69,8 @@
   (run* [q]
         (female q)))
 
-(defrel father f c)
-(facts father '[[antoine chloe]
+(defrel parent p c)
+(facts parent '[[antoine chloe]
                 [antoine theo]
                 [marc antoine]
                 [robert-charles robert]
@@ -88,35 +91,8 @@
                 [arnaud maxence]
                 [pierre thomas]
                 [michel eglantine]
-                [michel william]])
-
-(defn fathers
-  "Compute all the fathers relationships"
-  []
-  (run* [q]
-        (fresh [m c]
-               (father m c)
-               (== q [m c]))))
-
-(comment
-  (fathers)
-
-  ;; give me all the relationships father/child
-  (run* [q]
-        (fresh [f c]
-               (father f c)
-               (== q [f c])))
-
-  ;; laurence's father?
-  (run* [q]
-        (father q 'laurence))
-
-  ;; claude's child?
-  (run* [q]
-        (father 'claude q)))
-
-(defrel mother m c)
-(facts mother '[[christelle chloe]
+                [michel william]
+                [christelle chloe]
                 [christelle theo]
                 [laurence antoine]
                 [jeanne laurence]
@@ -137,47 +113,53 @@
                 [audrey clemence]
                 [brigitte william]
                 [brigitte eglantine]
-                [marie-paule thomas]])
+                [marie-paule thomas]
+                [louis jean]
+                [blanche jean]
+                [jean mylene]
+                [helene mylene]])
+
+(defn father
+  [p c]
+  (fresh []
+         (parent p c)
+         (male p)))
 
 (comment
-  ;; give me all the mother/child relationships
+  (run* [q] (father q 'theo))
+  (run* [q] (father q 'antoine)))
+
+(defn fathers
+  "Compute all the fathers relationships"
+  []
   (run* [q]
-        (fresh [m c]
-               (mother m c)
-               (== q [m c]))))
+        (fresh [p c]
+               (father p c)
+               (== q [p c]))))
+
+(comment
+  (fathers))
+
+(defn mother
+  "Compute all the mothers relationships"
+  [p c]
+  (fresh []
+          (parent p c)
+          (female p)))
+
+(comment
+    (run* [q] (mother q 'christelle )))
 
 (defn mothers
   "Compute all the mothers relationships"
   []
   (run* [q]
-        (fresh [m c]
-               (mother m c)
-               (== q [m c]))))
-
-(comment
-  (mothers)
-
-  ;; give me all the parents relationships
-  (run* [q]
         (fresh [p c]
-               (conde
-                ((mother p c))
-                ((father p c)))
+               (mother p c)
                (== q [p c]))))
 
-;; give me all the parents
-(defn parent
-  [p c]
-  (conde
-   ((father p c))
-   ((mother p c))))
-
 (comment
-  ;; the same query as before but with a function
-  (run* [q]
-        (fresh [p c]
-               (parent p c)
-               (== q [p c]))))
+  (mothers))
 
 (defn parents
   "Computes all the parents relationships."
@@ -186,6 +168,9 @@
         (fresh [p c]
                (parent p c)
                (== q [p c]))))
+
+(comment
+  (parents))
 
 (defn children
   "List the children of the parent p."
@@ -330,4 +315,3 @@
 
 (comment
   (procreate))
-
