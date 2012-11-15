@@ -195,3 +195,58 @@
    [jeanne rene] (marie-paule michel laurence)
    [marthe robert] (marc)
    [muguette claude] (xavier arnaud christelle)})
+
+(comment
+  ;; give me all christelle's bretherins
+  (set (run* [q]
+             (fresh [p b]
+                    (parent p 'christelle)
+                    (parent p b)
+                    (!= q 'christelle)
+                    (== q b))))
+
+  ;; all christelle's brothers
+  (set (run* [q]
+             (fresh [p b]
+                    (parent p 'christelle)
+                    (parent p b)
+                    (male b)
+                    (!= q 'christelle)
+                    (== q b)))))
+
+(defn brothers "Give me s's brothers"
+  [s]
+  (set (run* [q]
+           (fresh [p b]
+                  (parent p s)
+                  (parent p b)
+                  (male b)
+                  (!= q s)
+                  (== q b)))))
+
+(comment
+  (brothers 'christelle)
+  (brothers 'chloe)
+
+  ;; all christelle's sisters
+  (set (run* [q]
+             (fresh [p b]
+                    (parent p 'christelle)
+                    (parent p b)
+                    (female b)
+                    (!= q 'christelle)
+                    (== q b)))))
+
+(defn sisters "Give me s's sisters"
+  [s]
+  (set (run* [q]
+           (fresh [p b]
+                  (parent p s)
+                  (parent p b)
+                  (female b)
+                  (!= q s)
+                  (== q b)))))
+
+(comment
+  (sisters 'christelle)
+  (sisters 'theo))
