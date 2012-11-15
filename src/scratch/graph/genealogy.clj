@@ -19,7 +19,15 @@
               [arnaud]
               [xavier]])
 
+(defn males
+  "Compute all the males"
+  []
+  (run* [q]
+        (male q)))
+
 (comment
+  (males)
+
   (run* [q]
         (male q)))
 
@@ -282,3 +290,4 @@
 (comment
   (sisters 'christelle)
   (sisters 'theo))
+
