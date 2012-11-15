@@ -4,26 +4,34 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; dorothy (graphviz generation) play
 
+(defn add-nodes
+  "Given a list of edges, compute the nodes"
+  [edges]
+  (->> edges
+       flatten
+       (map keyword)
+       set
+       vec))
+
 (defn add-edges
+  "Compute the edges"
   [edges]
   (->> edges
        (map (fn [v] (map keyword v)))
        (map vec)))
 
-(let [p (g/parents)]
+(let [mothers (g/mothers)
+      fathers (g/fathers)
+      parents (concat mothers fathers)]
   (-> (concat
        ;; shape
        ;; [[:node {:shape :box}]]
        ;; all the nodes
-       (->> p
-            flatten
-            (map keyword)
-            set
-            vec)
+       (add-nodes parents)
        ;; all the mothers
-       (add-edges (g/mothers))
+       (add-edges mothers)
        ;; all the fathers
-       (add-edges (g/fathers)))
+       (add-edges fathers))
       doall
       vec
       digraph
