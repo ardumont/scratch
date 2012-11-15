@@ -166,6 +166,13 @@
                (parent p c)
                (== q [p c]))))
 
+(defn children
+  "List the children of the parent p."
+  [p]
+  (run* [q] (parent p q)))
+
+(children 'antoine)
+
 ;; compute the ancestors
 (defn ancestorso [a c]
   (fresh [x]
@@ -298,7 +305,8 @@
              (fresh [m f c]
                     (mother m c)
                     (father f c)
-                    (== q [f m])))))
+                    (== q [m f])))))
 
 (comment
   (procreate))
+
