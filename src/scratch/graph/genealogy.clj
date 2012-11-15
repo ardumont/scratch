@@ -17,7 +17,12 @@
               [cesar]
               [abel]
               [arnaud]
-              [xavier]])
+              [xavier]
+              [maxence]
+              [clarence]
+              [thomas]
+              [william]
+              [pierre]])
 
 (defn males
   "Compute all the males"
@@ -44,7 +49,11 @@
                 [marthe]
                 [elise]
                 [marie]
-                [madeleine]])
+                [madeleine]
+                [clemence]
+                [audrey]
+                [eglantine]
+                [brigitte]])
 
 (defn females
   "Compute all the females"
@@ -73,7 +82,13 @@
                 [louis claude]
                 [marius muguette]
                 [cesar marthe]
-                [abel jeanne]])
+                [abel jeanne]
+                [arnaud clarence]
+                [arnaud clemence]
+                [arnaud maxence]
+                [pierre thomas]
+                [michel eglantine]
+                [michel william]])
 
 (defn fathers
   "Compute all the fathers relationships"
@@ -116,7 +131,13 @@
                 [madeleine muguette]
                 [elise marthe]
                 [adele robert]
-                [marie jeanne]])
+                [marie jeanne]
+                [audrey maxence]
+                [audrey clarence]
+                [audrey clemence]
+                [brigitte william]
+                [brigitte eglantine]
+                [marie-paule thomas]])
 
 (comment
   ;; give me all the mother/child relationships
