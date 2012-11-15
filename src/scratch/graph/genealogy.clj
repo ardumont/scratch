@@ -95,7 +95,17 @@
                (mother m c)
                (== q [m c]))))
 
+(defn mothers
+  "Compute all the mothers relationships"
+  []
+  (run* [q]
+        (fresh [m c]
+               (mother m c)
+               (== q [m c]))))
+
 (comment
+  (mothers)
+
   ;; give me all the parents relationships
   (run* [q]
         (fresh [p c]
