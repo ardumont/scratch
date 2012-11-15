@@ -39,11 +39,12 @@
                    :color :cyan})]
      (add-nodes (g/males))
 
-     ;; all the mothers
-     (add-edges (g/mothers))
+     ;; parents
+     (add-edges (g/parents))
 
-     ;; all the fathers
-     (add-edges (g/fathers)))
+     [(edge-attrs {:arrowhead :none :color :red :label "and"})]
+     ;; all the couples that add children
+     (add-edges (g/procreate)))
     doall
     vec
     digraph

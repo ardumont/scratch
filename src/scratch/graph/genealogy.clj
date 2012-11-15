@@ -291,3 +291,14 @@
   (sisters 'christelle)
   (sisters 'theo))
 
+(defn procreate
+  "Gives all the couples which have children."
+  []
+  (set (run* [q]
+             (fresh [m f c]
+                    (mother m c)
+                    (father f c)
+                    (== q [f m])))))
+
+(comment
+  (procreate))
