@@ -31,9 +31,21 @@
                 [louise]
                 [blanche]
                 [jeanne]
-                [marie-paule]])
+                [marie-paule]
+                [adele]
+                [marthe]
+                [elise]
+                [marie]
+                [madeleine]])
+
+(defn females
+  "Compute all the females"
+  []
+  (run* [q]
+        (female q)))
 
 (comment
+  (females)
   (run* [q]
         (female q)))
 
