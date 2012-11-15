@@ -42,9 +42,10 @@
      ;; parents
      (add-edges (g/parents))
 
-     [(edge-attrs {:arrowhead :none :color :red :label "and"})]
-     ;; all the couples that add children
+     [(edge-attrs {:arrowhead :none :color :red :label "&"})]
+     ;; the couples that add children
      (add-edges (g/procreate)))
+
     doall
     vec
     digraph
