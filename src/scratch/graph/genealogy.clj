@@ -55,7 +55,17 @@
                 [cesar marthe]
                 [abel jeanne]])
 
+(defn fathers
+  "Compute all the fathers relationships"
+  []
+  (run* [q]
+        (fresh [m c]
+               (father m c)
+               (== q [m c]))))
+
 (comment
+  (fathers)
+
   ;; give me all the relationships father/child
   (run* [q]
         (fresh [f c]
