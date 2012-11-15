@@ -16,7 +16,8 @@
 
 ;; proposed structure
 {:edgedefault :directed
- :nodes [{:id :n1}
+ :nodes [{:id :n1
+          :name :n1}
          {:id :n2}
          {:id :n3}
          {:id :n4}]
@@ -29,11 +30,12 @@
 
 (defn make-node
   "Constructs graphml node entry."
-  [{:keys [id]}]
-  (format "<node id='%s' />" id))
+  [{:keys [id name]}]
+  (format "<node id='%s' attr.name='%s' />" id name))
 
 (comment
-  (make-node {:id :test}))
+  (make-node {:id :test})
+  (make-node {:id :test :name "test"}))
 
 (defn make-nodes
   "Constructs graphml nodes entries."
