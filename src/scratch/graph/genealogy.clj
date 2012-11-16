@@ -267,14 +267,36 @@
                     (!= q 'christelle)
                     (== q b)))))
 
+(defn brother
+  "someone's brother"
+  [b s]
+  (fresh [p]
+         (parent p b)
+         (parent p s)
+         (male b)
+         (!= b s)))
+
+(;; give me all the brother relationships
+ (run* [q]
+       (fresh [b c]
+              (brother b c)
+              (== q [b c])))
+
+ ;; all christelle's brothers
+ (set (run* [q]
+            (brother q 'christelle)))
+
+ (set  (run* [q]
+             (brother 'christelle q)))
+ ;; #{} christelle is a sister, not a brother
+
+ )
+
 (defn brothers "Give me s's brothers"
   [s]
   (set (run* [q]
-           (fresh [p b]
-                  (parent p s)
-                  (parent p b)
-                  (male b)
-                  (!= q s)
+           (fresh [b]
+                  (brother b s)
                   (== q b)))))
 
 (comment
