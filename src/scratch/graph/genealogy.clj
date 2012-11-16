@@ -285,7 +285,9 @@
  ;; all christelle's brothers
  (set (run* [q]
             (brother q 'christelle)))
+ ;; #{xavier arnaud}
 
+ ;; give me all the people which have christelle as a brother (not a lot of people)
  (set  (run* [q]
              (brother 'christelle q)))
  ;; #{} christelle is a sister, not a brother
@@ -301,30 +303,49 @@
 
 (comment
   (brothers 'christelle)
+  ;; #{xavier arnaud}
+
   (brothers 'chloe)
+  ;; #{theo}
+  )
 
-  ;; all christelle's sisters
-  (set (run* [q]
-             (fresh [p b]
-                    (parent p 'christelle)
-                    (parent p b)
-                    (female b)
-                    (!= q 'christelle)
-                    (== q b)))))
-
-(defn sisters "Give me s's sisters"
-  [s]
-  (set (run* [q]
-           (fresh [p b]
-                  (parent p s)
-                  (parent p b)
-                  (female b)
-                  (!= q s)
-                  (== q b)))))
+(defn sister
+  "One's sister"
+  [s o]
+  (fresh [p]
+         (parent p s)
+         (parent p o)
+         (female s)
+         (!= o s)))
 
 (comment
+  ;; give me all the people which have christelle as a sister
+  (set
+   (run* [q] (sister 'christelle q)))
+
+  ;; xavier's sister
+  (set
+   (run* [q] (sister q 'xavier))))
+
+(defn sisters
+  "One's sisters."
+  [o]
+  (set (run* [q]
+             (fresh [s]
+                    (sister s o)
+                    (== q s)))))
+
+(comment
+  (sisters 'laurence)
+  ;; #{marie-paule}
+
   (sisters 'christelle)
-  (sisters 'theo))
+  ;; #{}
+
+  (sisters 'theo)
+  ;; #{chloe}
+
+  )
 
 (defn procreate
   "Gives all the couples which have children."
