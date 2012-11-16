@@ -358,3 +358,24 @@
 
 (comment
   (procreate))
+
+(defn uncle
+  "Someone's uncle"
+  [u s]
+  (fresh [p]
+         (parent p s)
+         (brother u p)
+         (!= u p)))
+
+(comment
+  ;; antoine's uncles
+  (set (run* [q] (uncle q 'antoine))) ;; michel
+
+  ;; the people which have arnaud as uncle
+  (set (run* [q] (uncle 'arnaud q)));; #{chloe theo}
+
+  ;; all the uncle relationships
+  (set (run* [q]
+             (fresh [u s]
+                    (uncle u s)
+                    (== q [u s])))))
