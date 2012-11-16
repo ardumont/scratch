@@ -379,3 +379,24 @@
              (fresh [u s]
                     (uncle u s)
                     (== q [u s])))))
+
+(defn aunt
+  "Someone's aunt"
+  [a s]
+  (fresh [p]
+         (parent p s)
+         (sister a p)
+         (!= a p)))
+
+(comment
+  ;; antoine's aunts
+  (set (run* [q] (aunt q 'antoine))) ;; marie-paule
+
+  ;; the people which have arnaud as aunt
+  (set (run* [q] (aunt 'marie-paule q)));; #{antoine william eglantine}
+
+  ;; all the aunt relationships
+  (set (run* [q]
+             (fresh [a s]
+                    (aunt a s)
+                    (== q [a s])))))
