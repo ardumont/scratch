@@ -400,3 +400,21 @@
              (fresh [a s]
                     (aunt a s)
                     (== q [a s])))))
+
+(defn niece
+  "Someone's niece"
+  [n s]
+  (fresh []
+         (conde
+          ((uncle s n))
+          ((aunt s n)))
+         (female n)))
+
+(comment
+  (set (run* [q] (niece q 'christelle)))
+
+  (run* [q]
+        (fresh [ua n]
+               (niece n ua)
+               (== q [n ua]))))
+
