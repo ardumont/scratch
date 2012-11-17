@@ -1,29 +1,9 @@
 (ns scratch.graph.genealogy-dorothy
   (:use [dorothy.core])
-  (:require [scratch.graph.genealogy :as g]))
+  (:require [scratch.graph.genealogy :as g]
+            [scratch.graph.genealogy-util :as u]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; dorothy (graphviz generation) play
-
-(defn make-procreate-edge
-  []
-  (let [procreate (g/procreate)]
-    (concat
-     ;; compute the links [father-mother child]
-     (->> procreate
-          (mapcat (fn [[m f :as v]]
-                    (let [common (keyword (format "%s-%s" m f))]
-                      (->> v
-                           (mapcat g/children)
-                           (map (fn [c] [common (keyword c)]))))))
-          set
-          vec)
-     ;; compute the links [[father father-mother] [mother father-mother]]
-     (->> procreate
-          (mapcat (fn [[m f :as v]]
-                    (let [common (keyword (format "%s-%s" m f))]
-                      [[(keyword m) common] [(keyword f) common]])))))))
-(comment
-  (make-procreate-edge))
 
 (defn add-nodes
   "Given a list of edges, compute the nodes"
@@ -44,7 +24,7 @@
        (map (fn [v] (map keyword v)))
        (map vec)))
 
-(comment
+(let [procreate-relations (g/procreate)]
   (-> (concat
        ;; shape
        ;; [[:node {:shape :box}]]
@@ -67,14 +47,13 @@
                      :height "0"
                      :width "0"
                      :label ""})]
-       (->> (make-procreate-edge)
-            (map first)
-            add-nodes)
+       ;; the couple nodes
+       (add-nodes (map first (u/make-father-mother-edges procreate-relations)))
 
        [(edge-attrs {:arrowhead :none
                      :color :red})]
        ;; the couples that add children
-       (add-edges (make-procreate-edge)))
+       (add-edges (u/make-procreate-edges procreate-relations)))
 
       doall
       vec
@@ -87,4 +66,4 @@
       ;;    (save! "out.png" {:format :png})
       ;;    (show!)
 
-      (save! "genealogy-family-christelle-antoine.svg" {:format :svg})))
+      (save! "genealogy-family.graphviz.svg" {:format :svg})))
