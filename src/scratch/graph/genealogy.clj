@@ -276,7 +276,7 @@
          (male b)
          (!= b s)))
 
-(;; give me all the brother relationships
+(comment ;; give me all the brother relationships
  (run* [q]
        (fresh [b c]
               (brother b c)
@@ -417,4 +417,3 @@
         (fresh [ua n]
                (niece n ua)
                (== q [n ua]))))
-
