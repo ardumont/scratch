@@ -68,8 +68,8 @@
 
 ;; test the generation
 (let [g (-> (gen-tree)
-            ;;              (layout :hierarchical) ;; some imbroglio in the arrays
-            (layout :radial :radius 90) ;; more interesting
+            (layout :hierarchical) ;; some imbroglio in the arrays
+            ;;(layout :radial :radius 90) ;; more interesting
             ;;              (layout :random) ;; massive explosion and change to each execution
             ;;              (layout :naive) ;; the compilation does not finish
             (build))]
