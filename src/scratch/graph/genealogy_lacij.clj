@@ -2,92 +2,75 @@
   (:use [lacij.layouts.layout]
         [lacij.graph.core]
         [lacij.graph.svg.graph])
-  (:require [scratch.graph.genealogy :as g]))
+  (:require [scratch.graph.genealogy :as g]
+            [scratch.graph.genealogy-util :as u]))
 
 ;; from https://github.com/pallix/lacij/blob/master/src/lacij/examples/hierarchicallayout.clj
 
 (defn add-nodes
+  "Complete the graph g with the nodes. "
   [g nodes]
   (reduce
-   (fn [g node] (add-node g node (name node)))
+   (fn [g node]
+     (add-node g node (name node)))
    g
    nodes))
 
-(defn add-edges
-  [g edges]
-  (let [g (add-nodes g (set (flatten edges)))]
-    (reduce (fn [g [src dst]]
-              (let [id (keyword (str (name src) "-" (name dst)))]
-                (add-edge g id src dst)))
-            g
-            edges)))
-
-(comment ;; some graph example
-  (defn gen-graph
-    []
-    (-> (create-graph)
-        (add-edges [[:claude :christelle]
-                    [:madeleine :muguette]
-                    [:marc :antoine]
-                    [:christelle :theo]
-                    [:charles-louis :rene]
-                    [:marie :jeanne]
-                    [:antoine :chloe]
-                    [:jeanne :marie-paule]
-                    [:rene :marie-paule]
-                    [:jeanne :michel]
-                    [:antoine :theo]
-                    [:jeanne :laurence]
-                    [:rene :michel]
-                    [:louise :rene]
-                    [:cesar :marthe]
-                    [:marthe :marc]
-                    [:rene :laurence]
-                    [:laurence :antoine]
-                    [:robert :marc]
-                    [:muguette :xavier]
-                    [:claude :xavier]
-                    [:muguette :arnaud]
-                    [:marius :muguette]
-                    [:adele :robert]
-                    [:claude :arnaud]
-                    [:christelle :chloe]
-                    [:louis :claude]
-                    [:elise :marthe]
-                    [:abel :jeanne]
-                    [:blanche :claude]
-                    [:robert-charles :robert]
-                    [:muguette :christelle]])))
-
-  (let [g (-> (gen-graph)
-              (layout :hierarchical)
-              (build))]
-    (export g "/tmp/genealogy-tree.svg" :indent "yes")))
-
 (comment
-  (let [p (g/parents)]
-    (->> p
-         (map (fn [v] (map keyword v)))
-         (map vec))))
+  (add-nodes (create-graph) (->> (g/procreate)
+                                 (u/make-father-mother-edges)
+                                 (map first))))
+
+(defn add-edges
+  "Complete the graph g with the edges."
+  [g edges]
+  (reduce (fn [g [src dst]]
+            (println "src" src "dst" dst)
+            (let [id (keyword (str (name src) "-" (name dst)))]
+              (add-edge g id src dst)))
+          g
+          edges))
+
+(add-edges (-> (create-graph)
+               (add-nodes (map keyword (g/females)))
+               (add-nodes (map keyword (g/males)))
+               (add-nodes (->> (g/procreate)
+                               (u/make-father-mother-edges)
+                               (map first))))
+           (u/make-procreate-edges (g/procreate)))
+
 
 (defn gen-tree
   "Generate the genealogy tree with the parents"
   []
-  (-> (create-graph)
-      (add-default-node-attrs :width 50 :height 30 :shape :circle)
-      (add-edges (->> (g/parents)
-                      (map (fn [v] (map keyword v)))
-                      (map vec)))))
+  (let [procreate-relations (g/procreate)]
+    (-> (create-graph)
+        (add-default-node-attrs :fill "pink"
+                                :width 50
+                                :height 30
+                                :shape :circle)
+        (add-nodes (map keyword (g/females)))
+        (add-default-node-attrs :fill "blue"
+                                :width 50
+                                :height 30
+                                :shape :circle)
+        (add-nodes (map keyword (g/males)))
 
-(comment
-  ;; test the gen-tree
-  (gen-tree)
+        (add-default-node-attrs :fill "purple"
+                                :width 0
+                                :height 0
+                                :shape :circle)
+        (add-nodes (->> (g/procreate)
+                        (u/make-father-mother-edges)
+                        (map first)))
 
-  ;; test the generation
-  (let [g (-> (gen-tree)
-;;              (layout :hierarchical) ;; some imbroglio in the arrays
-              (layout :radial :radius 90) ;; more interesting
-;;              (layout :random) ;; massive explosion and change to each execution
-;;              (layout :naive) ;; the compilation does not finish
-              (build))]
-    (export g "/tmp/genealogy-tree.svg" :indent "yes")))
+        (add-edges (u/make-procreate-edges procreate-relations)))))
+
+;; test the generation
+(let [g (-> (gen-tree)
+            ;;              (layout :hierarchical) ;; some imbroglio in the arrays
+            (layout :radial :radius 90) ;; more interesting
+            ;;              (layout :random) ;; massive explosion and change to each execution
+            ;;              (layout :naive) ;; the compilation does not finish
+            (build))]
+  (export g "genealogy-family.lacij.svg" :indent "yes"))
