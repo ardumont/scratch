@@ -1,7 +1,6 @@
 (ns scratch.trello.api
   (:require [clj-http.client   :as c]
-            [clojure.string    :as s]
-            [cljsta.wikeo.hook :as h]))
+            [clojure.string    :as s]))
 
 ;; your credentials in the ~/.trello/config.clj file
 ;; (def trello-credentials {:developer-api-key "developer-api-key"
