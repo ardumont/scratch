@@ -28,7 +28,7 @@
 (def ^{:doc "The scope we authorise the application to access."
        :private true}
   scopes
-  {:drive            (url-api-authorization "/drive")})
+  {:drive            (url-api-authorization "/drive.readonly")})
 
 ;; :drive-readonly   (url-api-authorization "/drive.readonly")
 ;; :email            (url-api-authorization "/userinfo.email")
