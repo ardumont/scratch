@@ -81,24 +81,8 @@
            :url        (compute-url (:drive url-api) path)
            :accept     :json
            :as         :json
-           :oauth-token (oauth-access-token-app :access-token)
-           :headers    {"Authorization" "Bearer"}}
+           :headers    {"Authorization" (str "Bearer " (oauth-access-token-app :access-token))}}
           opts)))
 
 (comment
-  (api-query :get "/files")
-  ;; {
-  ;;  "error": {
-  ;;   "errors": [
-  ;;    {
-  ;;     "domain": "usageLimits",
-  ;;     "reason": "dailyLimitExceededUnreg",
-  ;;     "message": "Daily Limit for Unauthenticated Use Exceeded. Continued use requires signup.",
-  ;;     "extendedHelp": "https://code.google.com/apis/console"
-  ;;    }
-  ;;   ],
-  ;;   "code": 403,
-  ;;   "message": "Daily Limit for Unauthenticated Use Exceeded. Continued use requires signup."
-  ;;  }
-  ;; }
-)
+  (api-query :get "/files"))
