@@ -57,3 +57,29 @@
     ;;  :birthday       "some-birthday",
     ;;  :picture        "some-uri-pointing-to-his-her-picture"}
     ))
+
+
+(defn url
+  "drive api url"
+  []
+  "https://www.googleapis.com/drive/v2")
+
+(defn compute-url
+  "Compute url with authentication needed."
+  [url path]
+  (format "%s%s" url path))
+
+(defn api-query
+  [method path & [opts]]
+  (c/request
+   (merge {:method     method
+           :url        (compute-url (url) path)
+           :accept     :json
+           :as         :json
+           :oauth-token (oauth-access-token-app :access-token)}
+          opts)))
+
+(api-query :get "/files")
+;; 403 - the query is ok but i do not have permissions to access such content
+;; 403 Forbidden
+;; The request was a valid request, but the server is refusing to respond to it.[2] Unlike a 401 Unauthorized response, authenticating will make no difference.[2] On servers where authentication is required, this commonly means that the provided credentials were successfully authenticated but that the credentials still do not grant the client permission to access the resource (e.g. a recognized user attempting to access restricted content).
