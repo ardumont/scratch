@@ -15,5 +15,6 @@
                  [clj-http                                  "0.4.0"]
                  [org.clojure/core.logic                    "0.7.5"]
                  [lacij                                     "0.7.1"]
-                 [com.google.apis/google-api-services-drive "v2-rev25-1.12.0-beta"]]
+                 [com.google.apis/google-api-services-drive "v2-rev25-1.12.0-beta"]
+                 [oauth-clj                                 "0.1.0"]]
   :description "a scratch project to rapidly test stuff")

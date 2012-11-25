@@ -12,99 +12,48 @@
 
 (load-file (str (System/getProperty "user.home") "/.sdk-drive/config.clj"))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; setup
-
-(def url {:api          "https://www.googleapis.com/drive/v2"
-          :authenticate "https://accounts.google.com/o/oauth2/auth"})
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; utils
-
-(defn- url-encode
-  "Interface to url encoding (to be able to change the implementation if need be."
-  [s]
-  (java.net.URLEncoder/encode s))
-
-(defn- complete-url
-  "Complete the initial url with the needed remaining ones."
-  [partial-url & other-params]
-  (apply conj partial-url other-params))
-
-(defn- key-pair-url-encode
-  "Url encode the key value pair and join them with the '='."
-  [[k v :as kv]]
-  (s/join \= (map url-encode kv)))
-
-(defn- http-encode
-  [params]
-  (s/join \& (map key-pair-url-encode params)))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; authentication
 
-;; Forming the url needed for the authentication
-(defn- authentication-parameters
-  []
-  {"response_type"   "code"
-   "client_id"       (:client-id sdk-drive-credentials)
-   "redirect_uri"    (:redirect-uri sdk-drive-credentials)
-   "scope"           "https://www.googleapis.com/auth/userinfo.email+https://www.googleapis.com/auth/userinfo.profile"
-   "state"           "/profile"
-   "access_type"     "online"
-   "approval_prompt" "auto"})
-
-(http-encode (authentication-parameters))
-
-;; Handling the response
-
-
-;; Calling the api
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; api
-
-(defn compute-url
-  "Compute url with authentication needed."
-  ([url path]
-     (format "%s%s?key=%s"
-             url
-             path
-             (:api-key sdk-drive-credentials)))
-  ([url path params]
-     (let [prefix (compute-url url path)]
-       (if-let [suffix (http-encode params)]
-         (str prefix \& suffix)
-         prefix))))
-
 (comment
-  (compute-url (:api url) "/about")
-  (compute-url (:api url) "/about" nil)
-  (compute-url (:api url) "/files")
-  (compute-url (:authenticate url) "/about" (authentication-parameters)))
+  ;; compute the authorization url
+  (oauth/oauth-authorization-url (:client-id sdk-drive-credentials)
+                                 (:redirect-uri sdk-drive-credentials))
 
-(defn auth-drive-query
-  "Authentication query"
-  [method path & [opts]]
-  (c/request
-   (merge {:method     method
-           :url        (compute-url (:authenticate url) path (authentication-parameters))
-           :accept     :json
-           :as         :json}
-          opts)))
+  (comment
 
-(comment
-  (auth-drive-query :get "/about")
-  ;; listings files
-  (auth-drive-query :get "/files"))
+    ;; ****************** manual intervention here:
+    ;; this needs to be executed to ask for the permission for the application
+    ;; the browser will open and ask for permission
+    ;; once accepted, you will be prompted with a code
+    ;; i added the code in question in the map in the sdk-drive-credentials
+    (oauth/oauth-authorize (:client-id sdk-drive-credentials)
+                           (:redirect-uri sdk-drive-credentials))
 
-(defn drive-query
-  "Api drive query"
-  [method path & [opts]]
-  (c/request
-   (merge {:method     method
-           :url        (compute-url (:api url) path)
-           :accept     :json
-           :as         :json}
-          opts)))
+    ;; obtain the oauth access from google
+    (def oauth-access-token-app
+      (oauth/oauth-access-token (:client-id     sdk-drive-credentials)
+                                (:client-secret sdk-drive-credentials)
+                                (:code          sdk-drive-credentials)
+                                (:redirect-uri  sdk-drive-credentials)))
+    ;; format of the token
+    ;;    {:id-token "some-token",
+    ;;     :expires-in 3600,
+    ;;     :token-type "Bearer",
+    ;;     :refresh-token "some-refresh-token",
+    ;;     :access-token "some-access-token"}
 
-(comment
-  (drive-query :get "/about")
-  ;; listings files
-  (drive-query :get "/files"))
+    (def oauth-client-app (oauth/oauth-client (oauth-access-token-app :access-token)))
+
+    (oauth/user-info oauth-client-app)
+    ;; {:gender         "male",
+    ;;  :link           "https://plus.google.com/some-id",
+    ;;  :name           "Antoine R. Dumont",
+    ;;  :given-name     "Antoine R.",
+    ;;  :locale         "en",
+    ;;  :verified-email true,
+    ;;  :family-name    "Dumont",
+    ;;  :email          "some-email@some-provider",
+    ;;  :id             "some-id",
+    ;;  :birthday       "some-birthday",
+    ;;  :picture        "some-uri-pointing-to-his-her-picture"}
+    ))
