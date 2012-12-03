@@ -15,30 +15,52 @@
 
 (defn compute-url
   "Compute url with authentication needed."
-  [url path]
-  (format "%s%s?key=%s&token=%s"
-          url
-          path
-          (:developer-api-key trello-credentials)
-          (:secret-token trello-credentials)))
+  ([url path]
+     (format "%s%s?key=%s"
+             url
+             path
+             (:developer-api-key trello-credentials)))
+  ([url path secret-token]
+     (format "%s&token=%s"
+             (compute-url url path)
+             secret-token)))
 
 (comment
-  (compute-url (url) "/members/ardumont"))
+  (compute-url (url) "/members/ardumont")
+  (compute-url (url) "/members/ardumont" "some-secret-token"))
 
 (defn api-query
-  [method path & [opts]]
-  (c/request
-   (merge {:method     method
-           :url        (compute-url (url) path)
-           :accept     :json
-           :as         :json}
-          opts)))
+  ([method path]
+     (c/request
+      {:method     method
+       :url        (compute-url (url) path)
+       :accept     :json
+       :as         :json}))
+  ([method path secret-token]
+     (c/request
+      {:method     method
+       :url        (compute-url (url) path secret-token)
+       :accept     :json
+       :as         :json})))
 
-(comment
-  ;; reading public data
+(comment ;; reading public data without tokens
   (api-query :get "/members/ardumont")
   (api-query :get "/boards/4d5ea62fd76aa1136000000c")
-  (api-query :get "/organizations/fogcreek")
+  (api-query :get "/organizations/fogcreek"))
 
-  ;; reading private data needs a token entry in the url
-  (api-query :get "/members/me/boards"))
+
+(defn get-token-from-url
+  "Generates the trello url to retrieve a token."
+  []
+  (format "https://trello.com/1/connect?key=%s&response_type=token&scope=read,write" (:developer-api-key trello-credentials)))
+
+(comment ;; for private data, we need to ask for a token
+
+  ;; execute this code, then let do the stuff the browser asks you to
+  (clojure.java.browse/browse-url (get-token-from-url))
+
+  ;; Retrieve the secret token the browser gives you
+  (def secret-token "some-private-token-we-retrieved-from-the-browser")
+
+  ;; now we can read/write to private data
+  (api-query :get "/members/me/boards" secret-token))
