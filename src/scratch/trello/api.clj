@@ -60,7 +60,10 @@
   (clojure.java.browse/browse-url (get-token-from-url))
 
   ;; Retrieve the secret token the browser gives you
-  (def secret-token "some-private-token-we-retrieved-from-the-browser")
+  (def secret-token "secret-token")
 
   ;; now we can read/write to private data
-  (api-query :get "/members/me/boards" secret-token))
+  (api-query :get "/members/me/boards" secret-token)
+
+  ;; list the cards of the board 50bcfd2f033110476000e768
+  (api-query :get "/board/50bcfd2f033110476000e768/lists" secret-token))
