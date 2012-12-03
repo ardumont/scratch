@@ -52,7 +52,7 @@
 (defn get-token-from-url
   "Generates the trello url to retrieve a token."
   []
-  (format "https://trello.com/1/connect?key=%s&response_type=token&scope=read,write" (:developer-api-key trello-credentials)))
+  (format "https://trello.com/1/connect?key=%s&expiration=1day&response_type=token&scope=read,write" (:developer-api-key trello-credentials)))
 
 (comment ;; for private data, we need to ask for a token
 
