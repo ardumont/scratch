@@ -7,26 +7,18 @@
             [clojure.zip     :as z]
             [clojure.string  :as s]))
 
+(defn map-from
+  "Compute a hash-map from an array"
+  [arr]
+  (zipmap arr (range (count arr))))
+
 (def ^{:doc "Explicit key mapping over range for the :item entry."}
-  tags (zipmap [:title
-                :link
-                :category
-                :pub-date
-                :description
-                :enclosure
-                :comments
-                :guid
-                :torrent]
-               (range 10)))
+  tags (map-from [:title :link :category :pub-date :description :enclosure :comments :guid :torrent]))
 
 (def ^{:doc "Explicit key mapping over range for the map on the torrent index."}
-  tags-torrent (zipmap [:file-name
-                        :content-length
-                        :info-hash
-                        :magnet-uri]
-                       (range 5)))
+  tags-torrent (map-from [:file-name :content-length :info-hash :magnet-uri]))
 
-(defn- itemize
+(defn itemize
   "Given a parsed feed, return the list of :item."
   [feed]
   (for [x (xml-seq feed) :when (= (:tag x) :item)] x))
@@ -95,4 +87,24 @@
        (filters filt)))
 
 (comment
-  (magnet-links-from-url "http://www.ezrss.it/feed/" ["criminal"]))
+  ;; find all magnet links regarding the criminal minds and haven tv shows
+  (magnet-links-from-url "http://www.ezrss.it/feed/" ["criminal minds" "haven"])
+  (magnet-links-from-url "http://www.ezrss.it/search/index.php?simple&show_name=haven&mode=rss" ["haven"]))
+
+(defn compute-rss-links
+  "Compute the ezrss.it rss flux"
+  [tv-shows]
+  (for [tvs tv-shows]
+    (str "http://www.ezrss.it/search/index.php?simple&show_name=" (s/replace tvs #"\s" "+") "&mode=rss")))
+
+(comment
+  (compute-rss-links ["some" "tv shows" "i like"])
+
+  (def some-mls (let [tv-shows ["big bang theory"
+                                "how i met your mother"
+                                "dexter"
+                                "fringe"
+                                "walking dead"
+                                "game of thrones"
+                                "misfits"]]
+                  (mapcat #(magnet-links-from-url % tv-shows) (compute-rss-links tv-shows)))))
