@@ -81,7 +81,8 @@
            :url        (compute-url (:drive url-api) path)
            :accept     :json
            :as         :json
-           ;; :headers    {"Authorization" (str "Bearer " (oauth-access-token-app :access-token))}}
+           ;; :headers    {"Authorization" (str "Bearer " (oauth-access-token-app :access-token))}
+           }
           opts)))
 
 (comment

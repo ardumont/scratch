@@ -1,8 +1,8 @@
 (ns scratch.drive.api-test
-  (:use [midje.sweet :only [fact]]
+  (:use [midje.sweet]
         [scratch.drive.api]))
 
-(fact
+(future-fact
  (compute-url "url/" "test") => "url/test?key=api-key"
  (provided
   (:api-key sdk-drive-credentials) => "api-key"))
