@@ -28,3 +28,23 @@
                                              (:c (:g)
                                                  (:h)
                                                  (:i))))
+
+(defn breadth-first
+  "breadth-first"
+  [tree]
+  (loop [ret [] queue (conj clojure.lang.PersistentQueue/EMPTY tree)]
+    (if (seq queue)
+      (let [[node & children] (peek queue)]
+        (recur (conj ret node) (into (pop queue) children)))
+      ret)))
+
+(fact "Breadth first approach"
+  (breadth-first '(:a (:b (:d
+                           (:j)
+                           (:k)
+                           (:l))
+                          (:e)
+                          (:f))
+                      (:c (:g)
+                          (:h)
+                          (:i)))) => '(:a :b :c :d :e :f :g :h :i :j :k :l))
