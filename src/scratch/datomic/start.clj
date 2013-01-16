@@ -3,7 +3,8 @@
 
 ;; adapted from http://www.datomic.com/company/resources/getting-started
 
-(doc d/q)
+;;; (doc d/q)
+
 ;; -------------------------
 ;; datomic.api/q
 ;; ([query & inputs])
