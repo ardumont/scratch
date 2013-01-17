@@ -1,6 +1,6 @@
 (ns ^{:doc "A namespace to fool around with depth-first walk"}
-  scratch.algo.depth-first
-  [:use [midje.sweet :only [fact future-fact]] ])
+  scratch.algo.breadth-first
+  (:use [midje.sweet :only [fact future-fact]]))
 
 (defn mktree
   "Create a tree representing a journey"
@@ -29,7 +29,7 @@
                                                  (:h)
                                                  (:i))))
 
-(defn breadth-first
+(defn bdt-fst
   "breadth-first"
   [tree]
   (loop [ret [] queue (conj clojure.lang.PersistentQueue/EMPTY tree)]
@@ -39,12 +39,33 @@
       ret)))
 
 (fact "Breadth first approach"
-  (breadth-first '(:a (:b (:d
-                           (:j)
-                           (:k)
-                           (:l))
-                          (:e)
-                          (:f))
-                      (:c (:g)
-                          (:h)
-                          (:i)))) => '(:a :b :c :d :e :f :g :h :i :j :k :l))
+  (bdt-fst '(:a (:b (:d
+                     (:j)
+                     (:k)
+                     (:l))
+                    (:e)
+                    (:f))
+                (:c (:g)
+                    (:h)
+                    (:i)))) => '(:a :b :c :d :e :f :g :h :i :j :k :l))
+
+(defn bdt-fst-lazy
+  "breadth-first lazily"
+  [tree]
+  ((fn next-elt [queue]
+     (lazy-seq
+      (when (seq queue)
+        (let [[node & children] (peek queue)]
+          (cons node (next-elt (into (pop queue) children)))))))
+   (conj clojure.lang.PersistentQueue/EMPTY tree)))
+
+(fact "Breadth first approach, lazy"
+  (take 3 (bdt-fst-lazy '(:a (:b (:d
+                                  (:j)
+                                  (:k)
+                                  (:l))
+                                 (:e)
+                                 (:f))
+                             (:c (:g)
+                                 (:h)
+                                 (:i))))) => '(:a :b :c))
