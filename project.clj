@@ -12,7 +12,7 @@
                  [cascalog                                  "1.10.0"]
                  [korma                                     "0.3.0-beta11"]
                  [mysql/mysql-connector-java                "5.1.21"]
-                 [clj-http                                  "0.4.0"]
+                 [clj-http                                  "0.6.3"]
                  [org.clojure/core.logic                    "0.7.5"]
                  [lacij                                     "0.7.1"]
                  [com.google.apis/google-api-services-drive "v2-rev25-1.12.0-beta"]
