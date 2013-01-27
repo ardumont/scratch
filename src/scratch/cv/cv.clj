@@ -1,4 +1,4 @@
-(ns cv
+(ns scratch.cv.cv
   "My cv as pure data. After all, everything is data!"
   (:require [clojure
              [string :as s]
