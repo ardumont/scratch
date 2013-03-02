@@ -19,5 +19,7 @@
                  [oauth-clj                                 "0.1.0"]
                  [com.datomic/datomic-free                  "0.8.3619"]
                  [org.slf4j/slf4j-api                       "1.7.2"]
-                 [clj-ssh                                   "0.5.2"]]
+                 [clj-ssh                                   "0.5.2"]
+                 [environ                                   "0.3.0"]
+                 [midje                                     "1.4.0"]]
   :description "a scratch project to rapidly test stuff")
