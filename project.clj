@@ -18,5 +18,6 @@
                  [com.google.apis/google-api-services-drive "v2-rev25-1.12.0-beta"]
                  [oauth-clj                                 "0.1.0"]
                  [com.datomic/datomic-free                  "0.8.3619"]
-                 [org.slf4j/slf4j-api                       "1.7.2"]]
+                 [org.slf4j/slf4j-api                       "1.7.2"]
+                 [clj-ssh                                   "0.5.2"]]
   :description "a scratch project to rapidly test stuff")
