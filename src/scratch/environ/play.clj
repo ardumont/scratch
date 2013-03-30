@@ -5,3 +5,5 @@
 (fact
  (env :some-key)       => "wouhou"
  (env :some-other-key) => "it works!!!")
+
+(+ 1 :a)
