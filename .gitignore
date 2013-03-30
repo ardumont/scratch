@@ -9,3 +9,4 @@
 /target/stale/dependencies
 /target/repl-port
 /target/stale/
+/.lein-repl-history
