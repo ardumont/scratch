@@ -1,39 +1,43 @@
-(ns scratch.korma
+(ns mysql-to-datomic.core
   "Play with korma"
   (:use [korma.db]
         [korma.core])
   (:require [clojure.string :as s]))
 
-(defdb db (mysql {:db       "gestioneleves"
-                  :user     "gestioneleves"
-                  :password "gestioneleves"
+(defdb db (mysql {:db       "eleves"
+                  :user     "eleves"
+                  :password "eleves"
                   :naming {:keys   s/lower-case
                            :fields s/lower-case}}))
+
+(declare professeurs classes)
 
 (defentity professeur_classe
   (table :PROFESSEUR_CLASSE :professeur_classe)
   (belongs-to professeurs)
   (belongs-to classes))
 
-(select professeur_classe
-        (join professeurs (= :professeurs.PROFESSEUR_ID :professeur_classe.ID_PROFESSEUR)))
-
 (defentity professeurs
   (pk :PROFESSEUR_ID)
   (table :PROFESSEURS :professeurs)
   (has-many professeur_classe))
 
-(select professeurs
-        (join professeur_classe (= :professeur_classe.ID_PROFESSEUR :professeurs.PROFESSEUR_ID))
-        (join classes           (= :classes.CLASSE_ID :professeur_classe.ID_CLASSE)))
+(comment
+  (select professeur_classe
+          (join professeurs (= :professeurs.PROFESSEUR_ID :professeur_classe.ID_PROFESSEUR)))
+
+  (select professeurs
+          (join professeur_classe (= :professeur_classe.ID_PROFESSEUR :professeurs.PROFESSEUR_ID))
+          (join classes           (= :classes.CLASSE_ID :professeur_classe.ID_CLASSE))))
 
 (defentity classes
   (pk :CLASSE_ID)
   (table :CLASSES :classes)
   (belongs-to professeur_classe))
 
-(select classes
-        (with professeur_classe))
+(comment
+  (select classes
+          (with professeur_classe)))
 
 (defentity ecoles                    (table :ECOLES :ecoles))
 (defentity commentaires              (table :COMMENTAIRES :commentaires))
@@ -67,4 +71,3 @@
   (select ecoles)
   (select commentaires)
   (select competences))
-
