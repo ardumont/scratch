@@ -21,5 +21,10 @@
                  [org.slf4j/slf4j-api                       "1.7.2"]
                  [clj-ssh                                   "0.5.2"]
                  [environ                                   "0.3.0"]
-                 [midje                                     "1.4.0"]]
+                 [midje                                     "1.4.0"]
+                 [vmfest                                    "0.3.0-alpha.2"]
+                 [log4j                                     "1.2.15" :exclusions [javax.mail/mail
+                                                                                  javax.jms/jms
+                                                                                  com.sun.jdmk/jmxtools
+                                                                                  com.sun.jmx/jmxri]]]
   :description "a scratch project to rapidly test stuff")
