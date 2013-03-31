@@ -55,17 +55,34 @@
 ;; display the entity map's keys
 (keys entity)
 
+;; display the entity completely (it seems to force the computation)
+(->> entity keys (reduce #(assoc % %2 (%2 entity)) {}))
+
+(defn display-entity
+  "Display the entity completely (force the computation it seems)"
+  [e]
+  (->> e
+       keys
+       (reduce #(assoc % %2 (%2 e)) {})))
+
+(display-entity entity)
+{:community/name "15th Ave Community"
+ :community/url "http://groups.yahoo.com/group/15thAve_Community/"
+ :community/neighborhood {:db/id 17592186045439}
+ :community/category #{"15th avenue residents"}
+ :community/orgtype :community.orgtype/community
+ :community/type :community.type/email-list}
+
 ;; display the value of the entity's community name
 (:community/name entity)
 
 ;; for each community, display it's name
-(let [db (db conn)]
-  (pprint (map #(:community/name (d/entity db (first %))) results)))
+(let [dbc (db conn)]
+  (pprint (map #(:community/name (d/entity dbc (first %))) results)))
 
-;; for each community, get its neighborhood and display
-;; both names
-(let [db (db conn)]
-  (pprint (map #(let [entity (d/entity db (first %))]
+;; for each community, get its neighborhood and display both names
+(let [dbc (db conn)]
+  (pprint (map #(let [entity (d/entity dbc (first %))]
                   [(:community/name entity)
                    (-> entity :community/neighborhood :neighborhood/name)])
                results)))
