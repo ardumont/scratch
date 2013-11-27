@@ -10,3 +10,4 @@
 /target/repl-port
 /target/stale/
 /.lein-repl-history
+/.nrepl-port
