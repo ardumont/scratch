@@ -2,7 +2,7 @@
   :min-lein-version "2.0.0"
   :profiles {:dev {:dependencies [[org.apache.hadoop/hadoop-core "0.20.2-dev"]
                                   [midje                         "1.4.0"]]}}
-  :dependencies [[org.clojure/clojure                       "1.5.0"]
+  :dependencies [[org.clojure/clojure                       "1.5.1"]
                  [dorothy                                   "0.0.3"]
                  [midje                                     "1.4.0"]
                  [org/jaudiotagger                          "2.0.3"]
@@ -23,6 +23,7 @@
                  [environ                                   "0.3.0"]
                  [midje                                     "1.4.0"]
                  [vmfest                                    "0.3.0-alpha.2"]
+                 [org.clojure/core.async                    "0.1.242.0-44b1e3-alpha"]
                  [log4j                                     "1.2.15" :exclusions [javax.mail/mail
                                                                                   javax.jms/jms
                                                                                   com.sun.jdmk/jmxtools
